@@ -12,13 +12,13 @@ const userSchema = mongoose.Schema({
   },
   blogs: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'blog',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'expense',
     },
   ],
 });
 
-expenseSchema.set('toJSON', {
+userSchema.set('toJSON', {
   transform: (doc, returnedObj) => {
     returnedObj.id = returnedObj._id.toString();
     delete returnedObj.__v;
@@ -26,6 +26,6 @@ expenseSchema.set('toJSON', {
   },
 });
 
-const User = mongoose.model('user', expenseSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;

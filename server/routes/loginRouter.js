@@ -1,20 +1,29 @@
-const loginRouter = require('express').Router()
+const loginRouter = require('express').Router();
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
-loginRouter.get('/', (req, res) => {
-  res.send('expense router get')
-})
+loginRouter.post('/', async (req, res) => {
+  const { username, name, password } = req.body;
 
-loginRouter.put('/', (req, res) => {
-  res.send('expense router get')
-})
+  const foundUser = await User.findOne({ username });
+  if (foundUser)
+    return res.status(409).json({
+      error: 'User already exists',
+    });
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser = new User({
+      username,
+      name,
+      hashedPassword: hashedPassword,
+    });
 
-loginRouter.post('/', (req, res) => {
-  res.send('expense router get')
-})
+    await newUser.save();
+    return res.redirect(302, '/login');
+  } catch (e) {
+    return res.status(404).json(e);
+  }
+});
 
-loginRouter.delete('/', (req, res) => {
-  res.send('expense router get')
-})
-
-
-module.exports = loginRouter
+module.exports = loginRouter;

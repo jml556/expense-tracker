@@ -4,6 +4,7 @@ const expenseSchema = mongoose.Schema({
   title: String,
   amount: Number,
   date: Date,
+  category: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
