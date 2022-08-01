@@ -3,11 +3,12 @@ const mongoose = require('mongoose');
 const expenseSchema = mongoose.Schema({
   title: String,
   amount: Number,
-  date: Date,
+  date: String,
   category: String,
+  description: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   }
 });
 
@@ -19,6 +20,6 @@ expenseSchema.set('toJSON', {
   },
 });
 
-const Expense = mongoose.model('expense', expenseSchema);
+const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;
