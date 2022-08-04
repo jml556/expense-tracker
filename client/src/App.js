@@ -1,3 +1,5 @@
+import {useSelector} from 'react-redux'
+
 function App() {
   return (
     <div className="bg-slate-200 h-screen flex items-center">
