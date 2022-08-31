@@ -11,6 +11,8 @@ const defaultUser = {
 
 const expenseReducer = (prevState = defaultExpense, action) => {
   switch (action.type) {
+    case "FETCH_EXPENSES": 
+      return [...action.payload]
     case "UPDATE_EXPENSE":
       return [...prevState];
     default:

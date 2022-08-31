@@ -53,6 +53,7 @@ expenseRouter.put('/', async (req, res) => {
 
 expenseRouter.post('/', async (req, res) => {
   const { title, amount, category, date, description } = req.body;
+  console.log(title, amount, category)
   const bearerToken = req.get('Authorization');
 
   if (!bearerToken)

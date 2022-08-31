@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React from 'react';
 import { Navbar, Dropdown, Avatar } from 'flowbite-react';
+import {Link} from 'react-router-dom'
 
 export default () => {
   return (
@@ -13,7 +14,7 @@ export default () => {
             alt="Flowbite Logo"
           />
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Flowbite
+            Expensify
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
@@ -46,9 +47,9 @@ export default () => {
           <Navbar.Link href="/navbars" active={true}>
             Home
           </Navbar.Link>
+          <Navbar.Link href="/navbars">Expenses</Navbar.Link>
+          <Navbar.Link href="/navbars">Add Expense</Navbar.Link>
           <Navbar.Link href="/navbars">About</Navbar.Link>
-          <Navbar.Link href="/navbars">Services</Navbar.Link>
-          <Navbar.Link href="/navbars">Pricing</Navbar.Link>
           <Navbar.Link href="/navbars">Contact</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
