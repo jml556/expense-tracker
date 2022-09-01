@@ -1,16 +1,16 @@
-const userRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const userRouter = require("express").Router();
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 const SECRET = process.env.SECRET;
 
-userRouter.get('/', async (req, res) => {
-  const bearerToken = req.get('Authorization');
-  console.log(bearerToken)
+userRouter.get("/", async (req, res) => {
+  const bearerToken = req.get("Authorization");
+  console.log(bearerToken);
 
   if (!bearerToken)
-    return res.status(400).json({ error: 'must include token' });
-  const token = (() => bearerToken.split(' ')[1])();
+    return res.status(400).json({ error: "must include token" });
+  const token = (() => bearerToken.split(" ")[1])();
 
   try {
     const isValidToken = jwt.verify(token, SECRET);
@@ -20,29 +20,29 @@ userRouter.get('/', async (req, res) => {
       expenses: foundUser.expenses,
     });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(400).send({
-      error: 'Invalid Token',
+      error: "Invalid Token",
     });
   }
 });
 
-userRouter.put('/', async (req, res) => {
-  const bearerToken = req.get('Authorization');
+userRouter.put("/", async (req, res) => {
+  const bearerToken = req.get("Authorization");
   const { oldPassword, newPassword } = req.body;
 
   if (!bearerToken)
-    return res.status(400).json({ error: 'must include token' });
+    return res.status(400).json({ error: "must include token" });
 
-  const token = (() => bearerToken.split(' ')[1])();
+  const token = (() => bearerToken.split(" ")[1])();
 
   try {
     const isValidToken = jwt.verify(token, SECRET);
     const foundUser = await User.findOne({ _id: isValidToken.id });
     const isValid = await bcrypt.compare(oldPassword, foundUser.hashedPassword);
 
-    if (!foundUser) return res.status(400).send({ error: 'User not found' });
-    if (!isValid) return res.status(400).send({ error: 'Password is invalid' });
+    if (!foundUser) return res.status(400).send({ error: "User not found" });
+    if (!isValid) return res.status(400).send({ error: "Password is invalid" });
 
     const saltRounds = 10;
 
@@ -52,28 +52,27 @@ userRouter.put('/', async (req, res) => {
     return res.status(200).json(foundUser);
   } catch (e) {
     return res.status(400).send({
-      error: 'Invalid Token',
+      error: "Invalid Token",
     });
   }
 });
 
-userRouter.post('/', async (req, res) => {
+userRouter.post("/", async (req, res) => {
   const { username, password } = req.body;
 
   const foundUser = await User.findOne({ username });
 
   if (!foundUser)
-    return res.status(404).send({ error: 'Password or Username invalid' });
+    return res.status(404).send({ error: "Password or Username invalid" });
   const isValid = await bcrypt.compare(password, foundUser.hashedPassword);
   if (!isValid)
-    return res.status(400).send({ error: 'Password or Username invalid' });
+    return res.status(400).send({ error: "Password or Username invalid" });
   const token = jwt.sign(
     {
       username: foundUser.username,
       id: foundUser._id,
     },
-    SECRET,
-    { expiresIn: '12h' },
+    SECRET
   );
 
   return res.status(200).json({
@@ -83,31 +82,31 @@ userRouter.post('/', async (req, res) => {
   });
 });
 
-userRouter.delete('/', async (req, res) => {
-  const bearerToken = req.get('Authorization');
+userRouter.delete("/", async (req, res) => {
+  const bearerToken = req.get("Authorization");
   const { oldPassword } = req.body;
 
   if (!bearerToken)
-    return res.status(400).json({ error: 'must include token' });
+    return res.status(400).json({ error: "must include token" });
 
-  const token = (() => bearerToken.split(' ')[1])();
+  const token = (() => bearerToken.split(" ")[1])();
 
   try {
     const isValidToken = jwt.verify(token, SECRET);
     const foundUser = await User.findOne({ _id: isValidToken.id });
     const isValid = await bcrypt.compare(oldPassword, foundUser.hashedPassword);
 
-    if (!foundUser) return res.status(400).send({ error: 'User not found' });
-    if (!isValid) return res.status(400).send({ error: 'Password is invalid' });
+    if (!foundUser) return res.status(400).send({ error: "User not found" });
+    if (!isValid) return res.status(400).send({ error: "Password is invalid" });
 
     await User.deleteOne({ _id: foundUser.id });
     return res.status(200).json({
-      message: 'Succesfully deleted User',
+      message: "Succesfully deleted User",
     });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(400).send({
-      error: 'Invalid Token',
+      error: "Invalid Token",
     });
   }
 });

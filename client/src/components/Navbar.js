@@ -1,9 +1,45 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from 'react';
-import { Navbar, Dropdown, Avatar } from 'flowbite-react';
-import {Link} from 'react-router-dom'
+import React, { useReducer } from "react";
+import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import { Link } from "react-router-dom";
+
+const initialState = {
+  Home: true,
+  Expenses: false,
+  "Submit Expense": false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "RESET":
+      return { Home: false, Expenses: false, "Submit Expense": false };
+    case "Home":
+      return {
+        ...state,
+        Home: true,
+      };
+    case "Expenses":
+      return {
+        ...state,
+        Expenses: true,
+      };
+    case "Submit Expense":
+      return {
+        ...state,
+        "Submit Expense": true,
+      };
+    default:
+      return state;
+  }
+};
 
 export default () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const setAnchorActive = (text) => {
+    dispatch({ type: "RESET" });
+    dispatch({ type: text });
+  };
+
   return (
     <div className="max-w-[1200px] m-auto">
       <Navbar fluid={true} rounded={true}>
@@ -11,7 +47,7 @@ export default () => {
           <img
             src="https://flowbite.com/docs/images/logo.svg"
             className="mr-3 h-6 sm:h-9"
-            alt="Flowbite Logo"
+            alt="Logo"
           />
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
             Expensify
@@ -44,13 +80,29 @@ export default () => {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link href="/navbars" active={true}>
-            Home
+          <Navbar.Link active={state.Home}>
+            <Link to="/" onClick={(e) => setAnchorActive(e.target.innerText)}>
+              Home
+            </Link>
           </Navbar.Link>
-          <Navbar.Link href="/navbars">Expenses</Navbar.Link>
-          <Navbar.Link href="/navbars">Add Expense</Navbar.Link>
-          <Navbar.Link href="/navbars">About</Navbar.Link>
-          <Navbar.Link href="/navbars">Contact</Navbar.Link>
+          <Navbar.Link active={state.Expenses}>
+            <Link
+              to="/expenses"
+              onClick={(e) => setAnchorActive(e.target.innerText)}
+            >
+              Expenses
+            </Link>
+          </Navbar.Link>
+          <Navbar.Link active={state["Submit Expense"]}>
+            <Link
+              to="/submit"
+              onClick={(e) => setAnchorActive(e.target.innerText)}
+            >
+              Submit Expense
+            </Link>
+          </Navbar.Link>
+          <Navbar.Link>About</Navbar.Link>
+          <Navbar.Link>Contact</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </div>

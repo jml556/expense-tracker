@@ -1,23 +1,9 @@
 import React from "react";
-import { Label, Checkbox, TextInput, Button, Card } from "flowbite-react";
-import { useInputHandler } from "../customHooks";
-import { postExpense } from "../api";
-import { useDispatch, useSelector } from "react-redux";
-import { getExpenseAction } from "../reducers/actions";
+import { Label, TextInput, Button, Card } from "flowbite-react";
+import { useInputHandler, useFormSubmit } from "../customHooks";
 
-/*
-  title: String,
-  amount: Number,
-  date: String,
-  category: String,
-  description: String,
-*/
 const Form = () => {
-  const dispatch = useDispatch();
-  const state = useSelector(state => {
-    console.log(state)
-    return state
-  })
+  const { getData } = useFormSubmit();
 
   const expenseHandler = useInputHandler();
   const amountHandler = useInputHandler();
@@ -27,19 +13,26 @@ const Form = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const data = {
+      title: expenseHandler.value,
+      amount: amountHandler.value,
+      date: dateHandler.value,
+      category: categoryHandler.value,
+      description: descriptionHandler.value,
+    };
     try {
-      const response = await postExpense({
-        title: expenseHandler.value,
-        amount: amountHandler.value,
-        date: dateHandler.value,
-        category: categoryHandler.value,
-        description: descriptionHandler.value,
-      });
-      console.log(response)
-      dispatch(getExpenseAction());
+      getData(data);
     } catch (e) {
       console.log(e);
     }
+    [
+      expenseHandler,
+      amountHandler,
+      dateHandler,
+      categoryHandler,
+      descriptionHandler,
+    ].forEach((handler) => handler.setValue(""));
+    console.log("ran");
   };
 
   return (

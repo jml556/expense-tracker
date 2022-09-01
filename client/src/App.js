@@ -1,10 +1,10 @@
 import Form from "./components/Form";
 import Navbar from "./components/Navbar";
-import { BrowserRouter, Switch, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getExpenseAction } from "./reducers/actions";
-import Chart from './components/Chart'
+import Chart from "./components/Chart";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,13 +14,19 @@ function App() {
   }, []);
 
   return (
-    <div className="p-5 min-h-[100vh]">
-      <Navbar />
-      <Chart />
-      <div className="flex justify-center">
-        <Form />
+    <BrowserRouter>
+      <div className="p-5 min-h-[100vh]">
+        <Navbar />
+        
+        <div className="flex justify-center mt-7">
+          <Routes>
+            <Route path="/" element={<div>Home</div>} />
+            <Route path="/expenses" element={<Chart />} />
+            <Route path="/submit" element={<Form />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
