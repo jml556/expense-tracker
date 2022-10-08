@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import ExpenseList from "./ExpenseList";
 import {
   LineChart,
   Line,
@@ -17,32 +18,35 @@ export default function Chart() {
         ...expense,
         date: expense.date.substring(5),
       }));
-    return []
+    return [];
   });
 
   return (
-    <LineChart
-      width={800}
-      height={500}
-      data={expenses}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line
-        type="monotone"
-        dataKey="amount"
-        stroke="#8884d8"
-        activeDot={{ r: 8 }}
-      />
-    </LineChart>
+    <div>
+      <LineChart
+        width={800}
+        height={500}
+        data={expenses}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="amount"
+          stroke="#8884d8"
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+      <ExpenseList expenses={expenses} />
+    </div>
   );
 }

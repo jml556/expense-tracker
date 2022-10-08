@@ -22,21 +22,14 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div
-        className={`p-5 min-h-[100vh] ${theme === "dark" ? "bg-black" : ""}`}
-      >
-        <Navbar />
+      <Navbar />
 
-        <div className="flex justify-center mt-7">
-          <button className="border" onClick={toggleTheme}>
-            Toggle Theme
-          </button>
-          <Routes>
-            <Route path="/" element={<div>Home</div>} />
-            <Route path="/expenses" element={<Chart />} />
-            <Route path="/submit" element={<Form />} />
-          </Routes>
-        </div>
+      <div className="flex justify-center mt-7">
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route path="/expenses" element={<Chart />} />
+          <Route path="/submit" element={<Form />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );

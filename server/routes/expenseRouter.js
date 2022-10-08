@@ -5,6 +5,7 @@ const SECRET = process.env.SECRET;
 const User = require('../models/User');
 
 expenseRouter.get('/', async (req, res) => {
+  console.log('hit')
   const bearerToken = req.get('Authorization');
 
   if (!bearerToken)
